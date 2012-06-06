@@ -9,7 +9,6 @@ import org.apache.pig.impl.logicalLayer.schema.Schema;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Days;
-import org.joda.time.ReadableInstant;
 
 public class DateUtils extends EvalFunc<Integer> {
 
@@ -22,15 +21,6 @@ public class DateUtils extends EvalFunc<Integer> {
 		int days = d.getDays();
 		if(days >= Integer.parseInt(input.get(0).toString()) && 
 				days <= Integer.parseInt(input.get(0).toString()))
-		{
-			return 1;
-		}
-		return 0;
-	}
-
-	public Integer exec(int a, int b, int c) throws IOException {
-		DateTimeZone.setDefault(DateTimeZone.UTC);
-		if(a >= b && a<= c)
 		{
 			return 1;
 		}
