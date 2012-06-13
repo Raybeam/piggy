@@ -72,7 +72,7 @@ public class IsContainedWithin extends EvalFunc<Integer> {
 	
 	public boolean acceptableInput(Tuple input)
 	{
-		if (input.size() >= 3)
+		if (input.size() == 4)
 			{
 				System.out.println("Wrong number of args");
 				return true;
@@ -80,23 +80,29 @@ public class IsContainedWithin extends EvalFunc<Integer> {
 		return false;
 	}
 	
-//	public static void main(String args[]) {
-//		try {
-//			String str_date = "11-June-07";
-//			String str_date2 = "11-June-08";
-//			DateFormat formatter;
-//			Date date;
-//			formatter = new SimpleDateFormat("dd-MMM-yy");
-//			date = (Date) formatter.parse(str_date);
-//			Date date2 = (Date) formatter.parse(str_date2);
-//			if(date2.after(date))
-//				System.out.println("yep");
-//			java.sql.Timestamp timeStampDate = new Timestamp(date.getTime());
-//			System.out.println("Today is " + timeStampDate);
-//			
-//		} catch (ParseException e) {
-//			System.out.println("Exception :" + e);
-//		}
-//	}
+	public static void main(String args[]) {
+		try {
+			String str_date = "11-June-07";
+			String str_date2 = "11-June-08";
+			DateFormat formatter;
+			Date date;
+			formatter = new SimpleDateFormat("dd-MMM-yy");
+			date = (Date) formatter.parse(str_date);
+			Date date2 = (Date) formatter.parse(str_date2);
+			if(date2.after(date))
+				System.out.println("yep");
+			java.sql.Timestamp timeStampDate = new Timestamp(date.getTime());
+			System.out.println("Today is " + timeStampDate);
+
+			formatter = new SimpleDateFormat("MM/dd/yyyy KK:mm:ss.S a");
+			String strd = "6/6/2012 04:04:57.000 PM";
+			date = (Date) formatter.parse(strd);
+			String d = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(date);
+			System.out.println(d);
+			
+		} catch (ParseException e) {
+			System.out.println("Exception :" + e);
+		}
+	}
 
 }
