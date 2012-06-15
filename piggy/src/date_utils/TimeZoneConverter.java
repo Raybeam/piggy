@@ -2,7 +2,6 @@ package date_utils;
 
 import java.io.IOException;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
@@ -43,7 +42,7 @@ public class TimeZoneConverter extends EvalFunc<String> {
 		} catch (Exception e) {
 			warn("Could not parse date: " + date + " with format: "
 					+ dateFormat, PigWarning.UDF_WARNING_1);
-			return null;
+			return "";
 		}
 
 		DateFormat df2 = new SimpleDateFormat(dateFormat);
