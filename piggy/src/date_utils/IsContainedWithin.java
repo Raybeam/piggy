@@ -1,13 +1,13 @@
 package date_utils;
 
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.pig.EvalFunc;
+import org.apache.pig.PigWarning;
 import org.apache.pig.data.DataType;
 import org.apache.pig.data.Tuple;
 import org.apache.pig.impl.logicalLayer.schema.Schema;
@@ -21,30 +21,42 @@ public class IsContainedWithin extends EvalFunc<Integer> {
 	 */
 	public Integer exec(Tuple input) throws IOException {
 		DateFormat formatter = new SimpleDateFormat(input.get(0).toString());
-		
-		// correct number of args passed
-		if (!acceptableInput(input))
-			return 0;
-
-		// if begin date is null
-		if (input.get(1).toString() == "" || input.get(1).toString() == null)
-			return 0;
-
 		try {
-			Date startDate = (Date) formatter.parse(input.get(1).toString());
-			Date endDate = getEndDate(input.get(2).toString(), formatter);
-			Date date = (Date) formatter.parse(input.get(3).toString());
-			if ((startDate.after(date) || startDate.equals(date))
-					&& endDate == null) {
-				return 1;
-			} else if ((startDate.after(date) || startDate.equals(date))
-					&& (endDate.before(date) || endDate.equals(date))) {
-				return 1;
-			}
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+			// correct number of args passed
+			if (DataChecker.isValid(input, 5))
+				{	
+					warn("Wrong number of args", PigWarning.UDF_WARNING_1);
+					return 0;
+				}
 
+			// if begin date is null
+			if (input.get(1).toString() == ""
+					|| input.get(1).toString() == null)
+				return 0;
+			
+			try {
+				Date startDate = (Date) formatter
+						.parse(input.get(1).toString());
+				Date endDate = getEndDate(input.get(2).toString(), formatter);
+				Date date = (Date) formatter.parse(input.get(3).toString());
+								
+				if ((date.after(startDate) || date.equals(startDate)) && endDate == null) {
+					return 1;
+				} else if ((date.after(startDate) || date.equals(startDate))
+						&& (endDate.after(date) || endDate.equals(date))) {
+					return 1;
+				}
+			} catch (ParseException e) {
+				warn("Parse Exception" + input.get(1).toString(),
+						PigWarning.UDF_WARNING_1);
+				e.printStackTrace();
+				return 0;
+			}
+		} catch (Exception e) {
+			warn("Exception" + input.get(1).toString(),
+					PigWarning.UDF_WARNING_1);
+			return 0;
+		}
 		return 0;
 	}
 
@@ -62,38 +74,4 @@ public class IsContainedWithin extends EvalFunc<Integer> {
 		} else
 			return null;
 	}
-
-	public boolean acceptableInput(Tuple input) {
-		if (input.size() == 4) {
-			System.out.println("Wrong number of args");
-			return true;
-		}
-		return false;
-	}
-
-	public static void main(String args[]) {
-		try {
-			String str_date = "11-June-07";
-			String str_date2 = "11-June-08";
-			DateFormat formatter;
-			Date date;
-			formatter = new SimpleDateFormat("dd-MMM-yy");
-			date = (Date) formatter.parse(str_date);
-			Date date2 = (Date) formatter.parse(str_date2);
-			if (date2.after(date))
-				System.out.println("yep");
-			java.sql.Timestamp timeStampDate = new Timestamp(date.getTime());
-			System.out.println("Today is " + timeStampDate);
-
-			formatter = new SimpleDateFormat("MM/dd/yyyy KK:mm:ss.S a");
-			String strd = "6/6/2012 04:04:57.000 PM";
-			date = (Date) formatter.parse(strd);
-			String d = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(date);
-			System.out.println(d);
-
-		} catch (ParseException e) {
-			System.out.println("Exception :" + e);
-		}
-	}
-
 }
