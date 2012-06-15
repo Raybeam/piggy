@@ -1,6 +1,5 @@
 package date_utils;
 
-
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -9,11 +8,12 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import org.apache.pig.EvalFunc;
+import org.apache.pig.PigWarning;
 import org.apache.pig.data.DataType;
 import org.apache.pig.data.Tuple;
 import org.apache.pig.impl.logicalLayer.schema.Schema;
 
-public class TimeZoneUtils extends EvalFunc<String>{
+public class TimeZoneUtils extends EvalFunc<String> {
 
 	public String exec(Tuple input) throws IOException {
 		String date = input.get(0).toString();
@@ -22,23 +22,24 @@ public class TimeZoneUtils extends EvalFunc<String>{
 		String toTimeZone = input.get(3).toString();
 		Date d = null;
 
-		DateFormat df1 = new SimpleDateFormat(dateFormat);  
-		df1.setTimeZone(TimeZone.getTimeZone(fromTimeZone));  
-		
+		DateFormat df1 = new SimpleDateFormat(dateFormat);
+		df1.setTimeZone(TimeZone.getTimeZone(fromTimeZone));
+
 		try {
 			d = df1.parse(date);
 		} catch (Exception e) {
-	  	warn("Could not parse date: " + date + " with format: " + dateFormat, PigWarning.UDF_WARNING_1);
+			warn("Could not parse date: " + date + " with format: "
+					+ dateFormat, PigWarning.UDF_WARNING_1);
 			return null;
-		}  
-		
-		DateFormat df2 = new SimpleDateFormat(dateFormat);  
-		df2.setTimeZone(TimeZone.getTimeZone(toTimeZone));  
-		
+		}
+
+		DateFormat df2 = new SimpleDateFormat(dateFormat);
+		df2.setTimeZone(TimeZone.getTimeZone(toTimeZone));
+
 		return df2.format(d);
 	}
-	
-    public Schema outputSchema(Schema input) {
-        return new Schema(new Schema.FieldSchema(null, DataType.CHARARRAY));
-    }
+
+	public Schema outputSchema(Schema input) {
+		return new Schema(new Schema.FieldSchema(null, DataType.CHARARRAY));
+	}
 }
