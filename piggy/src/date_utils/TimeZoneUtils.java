@@ -27,8 +27,9 @@ public class TimeZoneUtils extends EvalFunc<String>{
 		
 		try {
 			d = df1.parse(date);
-		} catch (ParseException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+	  	warn("Could not parse date: " + date + " with format: " + dateFormat, PigWarning.UDF_WARNING_1);
+			return null;
 		}  
 		
 		DateFormat df2 = new SimpleDateFormat(dateFormat);  
