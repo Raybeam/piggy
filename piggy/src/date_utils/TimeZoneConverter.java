@@ -22,38 +22,27 @@ public class TimeZoneConverter extends EvalFunc<String> {
 	 * be (date, date_format, from_timezone, to_timezone)
 	 */
 	public String exec(Tuple input) throws IOException {
+		String date = input.get(0).toString();
+		String dateFormat = input.get(1).toString();
+		String fromTimeZone = input.get(2).toString();
+		String toTimeZone = input.get(3).toString();
+		Date d = null;
+
+		DateFormat df1 = new SimpleDateFormat(dateFormat);
+		df1.setTimeZone(TimeZone.getTimeZone(fromTimeZone));
+
 		try {
-			if (DataChecker.isNull(input))
-				return "";
-
-			if (!DataChecker.isValid(input, 4))
-				return "";
-
-			String date = input.get(0).toString();
-			String dateFormat = input.get(1).toString();
-			String fromTimeZone = input.get(2).toString();
-			String toTimeZone = input.get(3).toString();
-			Date d = null;
-
-			DateFormat df1 = new SimpleDateFormat(dateFormat);
-			df1.setTimeZone(TimeZone.getTimeZone(fromTimeZone));
-
-			try {
-				d = df1.parse(date);
-			} catch (Exception e) {
-				warn("Could not parse date: " + date + " with format: "
-						+ dateFormat, PigWarning.UDF_WARNING_1);
-				return "";
-			}
-
-			DateFormat df2 = new SimpleDateFormat(dateFormat);
-			df2.setTimeZone(TimeZone.getTimeZone(toTimeZone));
-
-			return df2.format(d);
+			d = df1.parse(date);
 		} catch (Exception e) {
-			warn("Exception " + e.getMessage(), PigWarning.UDF_WARNING_1);
+			warn("Could not parse date: " + date + " with format: "
+					+ dateFormat, PigWarning.UDF_WARNING_1);
 			return "";
 		}
+
+		DateFormat df2 = new SimpleDateFormat(dateFormat);
+		df2.setTimeZone(TimeZone.getTimeZone(toTimeZone));
+
+		return df2.format(d);
 	}
 
 	public Schema outputSchema(Schema input) {
