@@ -1,18 +1,21 @@
 piggy
 =====
 
-Pig UDFS in Java
+<h1>Pig UDFS in Java</h1>
 
 Follow the following steps for creating a jar file which can be used in your pig scripts:
 
+<h2>Creating the jar file:</h2>
 
-Download the jar libs from the lib directory
-Copy the source and the jars in a folder called i.e. date_utils
-Compile the code in date_utils javac -cp hadoop.jar:pig.jar *.java
-Create the jar file by running jar -cf date_utils.jar date_utils/
+<ul>
+<li>Download the jar libs from the lib directory</li>
+<li>Copy the source and the jars in a folder called i.e. date_utils</li>
+<li>Compile the code in date_utils javac -cp hadoop.jar:pig.jar *.java</li>
+<li>Create the jar file by running jar -cf date_utils.jar date_utils/</li>
+</ul>
 
 
-You can define the function in pig like:
+<h3>You can define the function in pig like:</h3>
 
 DEFINE ConvertDate date_utils.ConvertDateFormat();
 
