@@ -26,7 +26,7 @@ public class TimeZoneConverter extends EvalFunc<String> {
 			if (DataChecker.isNull(input))
 				return "";
 
-			if (DataChecker.isValid(input, 5))
+			if (!DataChecker.isValid(input, 4))
 				return "";
 
 			String date = input.get(0).toString();
