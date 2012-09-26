@@ -22,10 +22,24 @@ public class TimeZoneConverter extends EvalFunc<String> {
 	 * be (date, date_format, from_timezone, to_timezone)
 	 */
 	public String exec(Tuple input) throws IOException {
-		String date = input.get(0).toString();
-		String dateFormat = input.get(1).toString();
-		String fromTimeZone = input.get(2).toString();
-		String toTimeZone = input.get(3).toString();
+		if (input == null || input.size() < 1) {
+    	return null;
+    }
+
+    String date;
+    String dateFormat;
+    String fromTimeZone;
+    String toTimeZone;
+		try {
+			date = input.get(0).toString();
+			dateFormat = input.get(1).toString();
+			fromTimeZone = input.get(2).toString();
+			toTimeZone = input.get(3).toString();
+		}
+		catch (Exception e) {
+			warn("Could not parse input, possible nulls", PigWarning.UDF_WARNING_1);
+			return null;
+		}
 		Date d = null;
 
 		DateFormat df1 = new SimpleDateFormat(dateFormat);
@@ -36,7 +50,7 @@ public class TimeZoneConverter extends EvalFunc<String> {
 		} catch (Exception e) {
 			warn("Could not parse date: " + date + " with format: "
 					+ dateFormat, PigWarning.UDF_WARNING_1);
-			return "";
+			return null;
 		}
 
 		DateFormat df2 = new SimpleDateFormat(dateFormat);
