@@ -27,9 +27,69 @@ public class TestUserAgentParser {
 	}
 
 	@Test
+	public void testNull() throws IOException {
+		UserAgentParser ua = new UserAgentParser();
+		String agent = null;
+		input = TupleFactory.getInstance().newTuple(bagtuples);
+		input.append(agent);
+
+		Tuple result = ua.exec(input);
+		result = ua.exec(input);
+		System.out.println(result.toString());
+	}
+
+	@Test
+	public void testAndroid() throws IOException {
+		UserAgentParser ua = new UserAgentParser();
+		String agent = null;
+		input = TupleFactory.getInstance().newTuple(bagtuples);
+		input.append(agent);
+
+		Tuple result = ua.exec(input);
+		result = ua.exec(input);
+		System.out.println(result.toString());
+	}
+
+	@Test
+	public void testIphone() throws IOException {
+		UserAgentParser ua = new UserAgentParser();
+		String agent = null;
+		input = TupleFactory.getInstance().newTuple(bagtuples);
+		input.append(agent);
+
+		Tuple result = ua.exec(input);
+		result = ua.exec(input);
+		System.out.println(result.toString());
+	}
+
+	@Test
+	public void testIpad() throws IOException {
+		UserAgentParser ua = new UserAgentParser();
+		String agent = null;
+		input = TupleFactory.getInstance().newTuple(bagtuples);
+		input.append(agent);
+
+		Tuple result = ua.exec(input);
+		result = ua.exec(input);
+		System.out.println(result.toString());
+	}
+
+	@Test
+	public void testDesktop() throws IOException {
+		UserAgentParser ua = new UserAgentParser();
+		String agent = null;
+		input = TupleFactory.getInstance().newTuple(bagtuples);
+		input.append(agent);
+
+		Tuple result = ua.exec(input);
+		result = ua.exec(input);
+		System.out.println(result.toString());
+	}
+
+	@Test
 	public void testExecTuple() throws IOException {
 		UserAgentParser ua = new UserAgentParser();
-		String result = ua.exec(input);
+		Tuple result = ua.exec(input);
 		System.out.println(result);
 		
 		String t2 = "Mozilla/5.0 (Linux; U; Android 4.0.4; en-us; GT-P5113 Build/IMM76D) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Safari/534.30";
@@ -37,7 +97,7 @@ public class TestUserAgentParser {
 		input = TupleFactory.getInstance().newTuple(bagtuples);
 		input.append(t2);
 		result = ua.exec(input);
-		System.out.println(result);
+		System.out.println(result.toString());
 	}
 	
 	
