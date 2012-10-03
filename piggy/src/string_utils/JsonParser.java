@@ -24,12 +24,15 @@ public class JsonParser extends EvalFunc<Tuple> {
 		;
 		Tuple result = TupleFactory.getInstance().newTuple(bagtuples);
 		String[] paramColumns = getParamColumns();
+		String jj = "";
 		try {
 			if (DataChecker.isValid(input, 1)) {
 				String json = "{}";
 				if (input.get(0) != null) {
 					json = input.get(0).toString();
+					json = json.replace("\\", "");
 				}
+				jj = json;
 				JSONObject jsonObject = JSONObject.fromObject(json);
 				for (String column : paramColumns) {
 					String data = (String) jsonObject.get(column);
@@ -41,9 +44,11 @@ public class JsonParser extends EvalFunc<Tuple> {
 			}
 		} catch (ExecException e) {
 			e.printStackTrace();
-		} catch (JSONException e) {
+		} 
+		catch (JSONException e) {
+			result.append(jj);
 			for (String column : paramColumns) {
-				result.append(column + "-");
+				result.append("-");
 			}
 		}
 		return result;
