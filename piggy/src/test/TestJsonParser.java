@@ -21,7 +21,7 @@ public class TestJsonParser {
 	@Before
 	public void setUp() throws Exception {
 		bagtuples = new ArrayList<Tuple>();
-		String json = "{\"l2\":\"flatware-dinnerware\"}";
+		String json = "{\"sales_event_id\":\"13840\",\"product_id\":\"678417\"}";
 		input = TupleFactory.getInstance().newTuple(bagtuples);
 		input.append(json);
 	}

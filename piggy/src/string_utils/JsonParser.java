@@ -24,7 +24,6 @@ public class JsonParser extends EvalFunc<Tuple> {
 		;
 		Tuple result = TupleFactory.getInstance().newTuple(bagtuples);
 		String[] paramColumns = getParamColumns();
-		String jj = "";
 		try {
 			if (DataChecker.isValid(input, 1)) {
 				String json = "{}";
@@ -32,11 +31,10 @@ public class JsonParser extends EvalFunc<Tuple> {
 					json = input.get(0).toString();
 					json = json.replace("\\", "");
 				}
-				jj = json;
 				JSONObject jsonObject = JSONObject.fromObject(json);
 				for (String column : paramColumns) {
 					String data = (String) jsonObject.get(column);
-					if (data == null) {
+					if (data == null || data.isEmpty()) {
 						data = "-";
 					}
 					result.append(data);
@@ -44,9 +42,7 @@ public class JsonParser extends EvalFunc<Tuple> {
 			}
 		} catch (ExecException e) {
 			e.printStackTrace();
-		} 
-		catch (JSONException e) {
-			result.append(jj);
+		} catch (JSONException e) {
 			for (String column : paramColumns) {
 				result.append("-");
 			}
@@ -55,9 +51,11 @@ public class JsonParser extends EvalFunc<Tuple> {
 	}
 
 	public String[] getParamColumns() {
-		String[] paramColumns = { "cart_id", "cart_line_id", "sales_event_id",
-				"product_id", "ds_cat_id", "l1",
-				"l2", "sku_id", "quantity", "payment_card_id" };
+		String[] paramColumns = { "cart_id", "cart_line_id", "ds_cat_id", "l1",
+				"l2", "order_id", "payment_card_id", "product_id", "quantity",
+				"sales_event_id", "sku_id", "sort_by", "is_default",
+				"max_depth", "exit_depth", "category_name", "vendor_id",
+				"address_id", "enter_depth", "total_page_depth", "is_active" };
 
 		return paramColumns;
 	}
