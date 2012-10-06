@@ -1,19 +1,24 @@
 package string_utils;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 
 import org.apache.pig.EvalFunc;
-import org.apache.pig.PigWarning;
 import org.apache.pig.backend.executionengine.ExecException;
 import org.apache.pig.data.DataType;
 import org.apache.pig.data.Tuple;
 import org.apache.pig.data.TupleFactory;
 import org.apache.pig.impl.logicalLayer.schema.Schema;
+import org.ho.yaml.Yaml;
+
+import redis.clients.jedis.Jedis;
 
 import date_utils.DataChecker;
 
@@ -33,9 +38,13 @@ public class JsonParser extends EvalFunc<Tuple> {
 				}
 				JSONObject jsonObject = JSONObject.fromObject(json);
 				for (String column : paramColumns) {
-					String data = (String) jsonObject.get(column);
-					if (data == null || data.isEmpty()) {
+					Object data = jsonObject.get(column);
+					if (data == null) {
 						data = "-";
+					}
+					else
+					{
+						data = data.toString();
 					}
 					result.append(data);
 				}
@@ -50,7 +59,25 @@ public class JsonParser extends EvalFunc<Tuple> {
 		return result;
 	}
 
+	public Jedis getRedis()
+	{
+		Jedis jedis = new Jedis("localhost");
+		return jedis;
+	}
+
+	public Entry getConfigs()
+	{
+		Entry entry = null;
+		try {
+			entry = Yaml.loadType(new File("ReceiptEntry.yml"), Entry.class);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return entry;
+	}
+	
 	public String[] getParamColumns() {
+
 		String[] paramColumns = { "cart_id", "cart_line_id", "ds_cat_id", "l1",
 				"l2", "order_id", "payment_card_id", "product_id", "quantity",
 				"sales_event_id", "sku_id", "sort_by", "is_default",

@@ -1,0 +1,3 @@
+redis:
+  host: ec2-184-72-70-1.compute-1.amazonaws.com
+  port: 123

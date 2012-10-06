@@ -19,7 +19,6 @@ public class UserAgentParser extends EvalFunc<Tuple> {
 
 	public Tuple exec(Tuple input) {
 		List<Tuple> bagtuples = new ArrayList<Tuple>();
-		;
 		Tuple result = TupleFactory.getInstance().newTuple(bagtuples);
 		try {
 			if (DataChecker.isValid(input, 1)) {

@@ -41,48 +41,51 @@ public class TestUserAgentParser {
 	@Test
 	public void testAndroid() throws IOException {
 		UserAgentParser ua = new UserAgentParser();
-		String agent = null;
+		String agent = "Mozilla/5.0 (Linux; <Android Version>; <Build Tag etc.>) AppleWebKit/<WebKit Rev> (KHTML, like Gecko) Chrome/<Chrome Rev> Mobile Safari/<WebKit Rev>";
 		input = TupleFactory.getInstance().newTuple(bagtuples);
 		input.append(agent);
 
 		Tuple result = ua.exec(input);
 		result = ua.exec(input);
+		assertEquals(result.get(3),"mobile");
 		System.out.println(result.toString());
 	}
 
 	@Test
 	public void testIphone() throws IOException {
 		UserAgentParser ua = new UserAgentParser();
-		String agent = null;
+		String agent = "Mozilla/5.0 (iPhone; U; CPU like Mac OS X; en) AppleWebKit/420+ (KHTML, like Gecko) Version/3.0 Mobile/1C25 Safari/419.3";
 		input = TupleFactory.getInstance().newTuple(bagtuples);
 		input.append(agent);
 
 		Tuple result = ua.exec(input);
 		result = ua.exec(input);
+		assertEquals(result.get(3),"mobile");
 		System.out.println(result.toString());
 	}
 
 	@Test
 	public void testIpad() throws IOException {
 		UserAgentParser ua = new UserAgentParser();
-		String agent = null;
+		String agent = "Mozilla/5.0(iPad; U; CPU iPhone OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7B314 Safari/531.21.10";
 		input = TupleFactory.getInstance().newTuple(bagtuples);
 		input.append(agent);
 
 		Tuple result = ua.exec(input);
 		result = ua.exec(input);
+		assertEquals(result.get(3),"mobile");
 		System.out.println(result.toString());
 	}
 
 	@Test
 	public void testDesktop() throws IOException {
 		UserAgentParser ua = new UserAgentParser();
-		String agent = null;
+		String agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_4) AppleWebKit/536.25 (KHTML, like Gecko) Version/6.0 Safari/536.25";
 		input = TupleFactory.getInstance().newTuple(bagtuples);
 		input.append(agent);
-
 		Tuple result = ua.exec(input);
 		result = ua.exec(input);
+		assertEquals(result.get(3),"desktop");
 		System.out.println(result.toString());
 	}
 
