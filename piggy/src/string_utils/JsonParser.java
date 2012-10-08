@@ -59,11 +59,7 @@ public class JsonParser extends EvalFunc<Tuple> {
 		return result;
 	}
 
-	public Jedis getRedis()
-	{
-		Jedis jedis = new Jedis("localhost");
-		return jedis;
-	}
+
 
 	public Entry getConfigs()
 	{
@@ -77,14 +73,19 @@ public class JsonParser extends EvalFunc<Tuple> {
 	}
 	
 	public String[] getParamColumns() {
-
-		String[] paramColumns = { "cart_id", "cart_line_id", "ds_cat_id", "l1",
+		
+		String[] paramColumns = {"cart_id", "cart_line_id", "ds_cat_id", "l1",
 				"l2", "order_id", "payment_card_id", "product_id", "quantity",
 				"sales_event_id", "sku_id", "sort_by", "is_default",
 				"max_depth", "exit_depth", "category_name", "vendor_id",
 				"address_id", "enter_depth", "total_page_depth", "is_active" };
 
-		return paramColumns;
+		Jedis redis = RedisHelper.getRedis();
+		String[] params = redis.get("param_columns").split(",");
+
+		redis.disconnect();
+		
+		return params;
 	}
 
 	public Schema outputSchema(Schema input) {
