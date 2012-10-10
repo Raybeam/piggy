@@ -16,7 +16,6 @@ import org.apache.pig.data.DataType;
 import org.apache.pig.data.Tuple;
 import org.apache.pig.data.TupleFactory;
 import org.apache.pig.impl.logicalLayer.schema.Schema;
-import org.ho.yaml.Yaml;
 
 import redis.clients.jedis.Jedis;
 
@@ -60,18 +59,18 @@ public class JsonParser extends EvalFunc<Tuple> {
 	}
 
 
-
-	public Entry getConfigs()
-	{
-		Entry entry = null;
-		try {
-			entry = Yaml.loadType(new File("ReceiptEntry.yml"), Entry.class);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		return entry;
-	}
-	
+//
+//	public Entry getConfigs()
+//	{
+//		Entry entry = null;
+//		try {
+//			entry = Yaml.loadType(new File("ReceiptEntry.yml"), Entry.class);
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		}
+//		return entry;
+//	}
+//	
 	public String[] getParamColumns() {
 		
 		String[] paramColumns = {"cart_id", "cart_line_id", "ds_cat_id", "l1",

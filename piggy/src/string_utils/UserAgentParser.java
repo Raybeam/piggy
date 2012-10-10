@@ -2,16 +2,22 @@ package string_utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.pig.backend.executionengine.ExecException;
 import org.apache.pig.data.DataType;
 import org.apache.pig.data.Tuple;
 import org.apache.pig.data.TupleFactory;
 import org.apache.pig.impl.logicalLayer.schema.Schema;
+
+import net.sf.json.JSONObject;
 import nl.bitwalker.useragentutils.UserAgent;
 import org.apache.pig.EvalFunc;
+
+import redis.clients.jedis.Jedis;
 
 import date_utils.DataChecker;
 
@@ -64,14 +70,17 @@ public class UserAgentParser extends EvalFunc<Tuple> {
 
 	private LinkedHashMap<String, String> getOsTypes() {
 		LinkedHashMap<String, String> osNames = new LinkedHashMap<String, String>();
-		osNames.put("iphone", "mobile");
-		osNames.put("ipad", "mobile");
-		osNames.put("android", "mobile");
-		osNames.put("ios", "mobile");
-		osNames.put("jvm", "mobile");
-		osNames.put("linux", "desktop");
-		osNames.put("windows", "desktop");
-		osNames.put("os_x", "desktop");
+		Jedis redis = RedisHelper.getRedis();
+		String osMapJson = redis.get("os_map");
+		JSONObject jsonObject = JSONObject.fromObject(osMapJson);
+		@SuppressWarnings("unchecked")
+		Iterator<String> keys = jsonObject.keys();
+		while(keys.hasNext())
+		{
+			String key	= keys.next().toString();
+			osNames.put(key, jsonObject.getString(key).toString());
+		}
+		redis.disconnect();
 		return osNames;
 	}
 
