@@ -1,5 +1,8 @@
 package string_utils;
 
+import io_utils.FileUtils;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -69,19 +72,58 @@ public class UserAgentParser extends EvalFunc<Tuple> {
 	}
 
 	private LinkedHashMap<String, String> getOsTypes() {
-		LinkedHashMap<String, String> osNames = new LinkedHashMap<String, String>();
-		Jedis redis = RedisHelper.getRedis();
-		String osMapJson = redis.get("os_map");
+		LinkedHashMap<String, String> osMap = new LinkedHashMap<String, String>();
+		String filename = "os_maps.txt";
+		//		osNames.put("iphone", "mobile");
+//		osNames.put("ipad", "mobile");
+//		osNames.put("android", "mobile");
+//		osNames.put("ios", "mobile");
+//		osNames.put("jvm", "mobile");
+//		osNames.put("linux", "desktop");
+//		osNames.put("windows", "desktop");
+//		osNames.put("os_x", "desktop");
+		String osMapJson = "";
+		
+		if(FileUtils.fileExists(filename))
+		{
+			try {
+				osMapJson = FileUtils.readFile(filename);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			Jedis redis = RedisHelper.getRedis();
+			osMapJson = redis.get("os_map");
+			try {
+				FileUtils.writeToFile(osMapJson,filename);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			redis.disconnect();
+		}
+		
+		osMap = buildOsMap(osMapJson);
+		
+		return osMap;
+	}
+
+	private LinkedHashMap<String, String> buildOsMap(String osMapJson)
+	{
+		LinkedHashMap<String, String> osMap = new LinkedHashMap<String, String>();
 		JSONObject jsonObject = JSONObject.fromObject(osMapJson);
 		@SuppressWarnings("unchecked")
 		Iterator<String> keys = jsonObject.keys();
 		while(keys.hasNext())
 		{
 			String key	= keys.next().toString();
-			osNames.put(key, jsonObject.getString(key).toString());
+			osMap.put(key, jsonObject.getString(key).toString());
 		}
-		redis.disconnect();
-		return osNames;
+
+		return osMap;
 	}
 
 	public Schema outputSchema(Schema input) {

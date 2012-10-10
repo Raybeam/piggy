@@ -1,5 +1,7 @@
 package string_utils;
 
+import io_utils.FileUtils;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -27,7 +29,12 @@ public class JsonParser extends EvalFunc<Tuple> {
 		List<Tuple> bagtuples = new ArrayList<Tuple>();
 		;
 		Tuple result = TupleFactory.getInstance().newTuple(bagtuples);
-		String[] paramColumns = getParamColumns();
+		String[] paramColumns = {};
+		try {
+			paramColumns = getParamColumns();
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
 		try {
 			if (DataChecker.isValid(input, 1)) {
 				String json = "{}";
@@ -40,9 +47,7 @@ public class JsonParser extends EvalFunc<Tuple> {
 					Object data = jsonObject.get(column);
 					if (data == null) {
 						data = "-";
-					}
-					else
-					{
+					} else {
 						data = data.toString();
 					}
 					result.append(data);
@@ -58,32 +63,38 @@ public class JsonParser extends EvalFunc<Tuple> {
 		return result;
 	}
 
+	public String[] getParamColumns() throws Exception {
 
-//
-//	public Entry getConfigs()
-//	{
-//		Entry entry = null;
-//		try {
-//			entry = Yaml.loadType(new File("ReceiptEntry.yml"), Entry.class);
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		}
-//		return entry;
-//	}
-//	
-	public String[] getParamColumns() {
-		
-		String[] paramColumns = {"cart_id", "cart_line_id", "ds_cat_id", "l1",
-				"l2", "order_id", "payment_card_id", "product_id", "quantity",
-				"sales_event_id", "sku_id", "sort_by", "is_default",
-				"max_depth", "exit_depth", "category_name", "vendor_id",
-				"address_id", "enter_depth", "total_page_depth", "is_active" };
+		// String[] params = {"cart_id", "cart_line_id", "ds_cat_id", "l1",
+		// "l2", "order_id", "payment_card_id", "product_id", "quantity",
+		// "sales_event_id", "sku_id", "sort_by", "is_default",
+		// "max_depth", "exit_depth", "category_name", "vendor_id",
+		// "address_id", "enter_depth", "total_page_depth", "is_active" };
 
-		Jedis redis = RedisHelper.getRedis();
-		String[] params = redis.get("param_columns").split(",");
+		String filename = "param_columns.txt";
+		String rawParams = "";
 
-		redis.disconnect();
-		
+		if (FileUtils.fileExists(filename)) {
+			try {
+				rawParams = FileUtils.readFile(filename);
+			} catch (IOException e) {
+				e.printStackTrace();
+				throw e;
+			}
+		} else {
+			Jedis redis = RedisHelper.getRedis();
+			rawParams = redis.get("param_columns");
+			try {
+				FileUtils.writeToFile(rawParams, filename);
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw e;
+			}
+			redis.disconnect();
+		}
+
+		String[] params = rawParams.split(",");
+
 		return params;
 	}
 
