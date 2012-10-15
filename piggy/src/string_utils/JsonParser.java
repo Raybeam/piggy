@@ -27,7 +27,6 @@ public class JsonParser extends EvalFunc<Tuple> {
 
 	public Tuple exec(Tuple input) throws IOException {
 		List<Tuple> bagtuples = new ArrayList<Tuple>();
-		;
 		Tuple result = TupleFactory.getInstance().newTuple(bagtuples);
 		String[] paramColumns = {};
 		try {
@@ -64,12 +63,6 @@ public class JsonParser extends EvalFunc<Tuple> {
 	}
 
 	public String[] getParamColumns() throws Exception {
-
-		// String[] params = {"cart_id", "cart_line_id", "ds_cat_id", "l1",
-		// "l2", "order_id", "payment_card_id", "product_id", "quantity",
-		// "sales_event_id", "sku_id", "sort_by", "is_default",
-		// "max_depth", "exit_depth", "category_name", "vendor_id",
-		// "address_id", "enter_depth", "total_page_depth", "is_active" };
 
 		String filename = "param_columns.txt";
 		String rawParams = "";

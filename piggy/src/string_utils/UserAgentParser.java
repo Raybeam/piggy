@@ -74,14 +74,7 @@ public class UserAgentParser extends EvalFunc<Tuple> {
 	private LinkedHashMap<String, String> getOsTypes() {
 		LinkedHashMap<String, String> osMap = new LinkedHashMap<String, String>();
 		String filename = "os_maps.txt";
-		//		osNames.put("iphone", "mobile");
-//		osNames.put("ipad", "mobile");
-//		osNames.put("android", "mobile");
-//		osNames.put("ios", "mobile");
-//		osNames.put("jvm", "mobile");
-//		osNames.put("linux", "desktop");
-//		osNames.put("windows", "desktop");
-//		osNames.put("os_x", "desktop");
+
 		String osMapJson = "";
 		
 		if(FileUtils.fileExists(filename))
@@ -89,7 +82,6 @@ public class UserAgentParser extends EvalFunc<Tuple> {
 			try {
 				osMapJson = FileUtils.readFile(filename);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -100,7 +92,6 @@ public class UserAgentParser extends EvalFunc<Tuple> {
 			try {
 				FileUtils.writeToFile(osMapJson,filename);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			redis.disconnect();

@@ -31,7 +31,6 @@ public class FileUtils {
 			out.write(data);
 			out.close();
 		} catch (Exception e) {
-			System.err.println("Error: " + e.getMessage());
 			throw e;
 		}
 	}
