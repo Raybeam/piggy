@@ -8,7 +8,7 @@ import org.apache.pig.impl.logicalLayer.schema.Schema;
 public class StringUtils  extends EvalFunc<String> {
 	
 	  public String exec(Tuple input) {
-		 return "hello bro"; 	
+		 return "sup"; 	
 	    }
 
 	    public Schema outputSchema(Schema input) {

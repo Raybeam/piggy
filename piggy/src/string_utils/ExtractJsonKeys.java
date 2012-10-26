@@ -1,9 +1,8 @@
 package string_utils;
 
-import io_utils.FileUtils;
-
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -31,10 +30,16 @@ public class ExtractJsonKeys extends EvalFunc<Tuple> {
 					json = input.get(0).toString();
 					json = json.replace("\\", "");
 				}
+				ArrayList<String> keys = new ArrayList<String>();
 				JSONObject jsonObject = JSONObject.fromObject(json);
 				Iterator it = jsonObject.keys();
 				while (it.hasNext()) {
 					String key = it.next().toString();
+					keys.add(key);
+				}
+				Collections.sort(keys);
+				for(String key : keys)
+				{
 					result.append(key);
 				}
 			}

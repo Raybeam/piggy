@@ -23,21 +23,21 @@ public class TimeZoneConverter extends EvalFunc<String> {
 	 */
 	public String exec(Tuple input) throws IOException {
 		if (input == null || input.size() < 1) {
-    	return null;
-    }
+			return null;
+		}
 
-    String date;
-    String dateFormat;
-    String fromTimeZone;
-    String toTimeZone;
+		String date;
+		String dateFormat;
+		String fromTimeZone;
+		String toTimeZone;
 		try {
 			date = input.get(0).toString();
 			dateFormat = input.get(1).toString();
 			fromTimeZone = input.get(2).toString();
 			toTimeZone = input.get(3).toString();
-		}
-		catch (Exception e) {
-			warn("Could not parse input, possible nulls", PigWarning.UDF_WARNING_1);
+		} catch (Exception e) {
+			warn("Could not parse input, possible nulls",
+					PigWarning.UDF_WARNING_1);
 			return null;
 		}
 		Date d = null;
