@@ -64,6 +64,20 @@ public class TestUserAgentParser {
 		System.out.println(result.toString());
 	}
 
+	 
+	@Test
+	public void testOklApp() throws IOException {
+		UserAgentParser ua = new UserAgentParser();
+		String agent = "oklapp/121311 CFNetwork/485.12.7 Darwin/10.4.0";
+		input = TupleFactory.getInstance().newTuple(bagtuples);
+		input.append(agent);
+		
+		Tuple result = ua.exec(input);
+		result = ua.exec(input);
+		assertEquals(result.get(3),"mobile_app");
+		System.out.println(result.toString());
+	}
+	
 	@Test
 	public void testIpad() throws IOException {
 		UserAgentParser ua = new UserAgentParser();

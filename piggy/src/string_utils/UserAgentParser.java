@@ -36,13 +36,22 @@ public class UserAgentParser extends EvalFunc<Tuple> {
 					user_agent = input.get(0).toString();
 				}
 				UserAgent ua = new UserAgent(user_agent);
-				result.append(ua.getBrowser().toString());
-				result.append(ua.getOperatingSystem().toString());
-
-				ArrayList<String> deviceType = getDevice(ua
-						.getOperatingSystem().toString());
-				result.append(deviceType.get(0).toString());
-				result.append(deviceType.get(1).toString());
+				if(user_agent.toString().contains("oklapp"))
+				{
+					result.append("okl_iphone_app");
+					result.append("MAC_OS_X");
+					result.append("iphone");
+					result.append("mobile_app");
+				}
+				else
+				{
+					result.append(ua.getBrowser().toString());
+					result.append(ua.getOperatingSystem().toString());		
+					ArrayList<String> deviceType = getDevice(ua
+							.getOperatingSystem().toString());
+					result.append(deviceType.get(0).toString());
+					result.append(deviceType.get(1).toString());
+				}			
 			}
 		} catch (ExecException e) {
 			e.printStackTrace();
