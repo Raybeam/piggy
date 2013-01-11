@@ -43,7 +43,7 @@ public class ApacheLogsParserV2 extends EvalFunc<Tuple> {
 					json = json.replace("\\", "");
 					json = json.replace("}\"","}");
 					json = json.replace("\"{","{");
-					json = json.replace("\"\"", "\"");
+					json = json.replace("\"HTTP/1.1\"\"","\"HTTP/1.1\"");
 					
 				}
 				JSONObject jsonObject = (JSONObject) JSONSerializer.toJSON( json );
